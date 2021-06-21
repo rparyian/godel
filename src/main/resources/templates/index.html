@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>forUserPage</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+</head>
+<body>
+<h3 class="center">Employees</h3>
+
+<table class="centered">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Department Id</th>
+        <th>Job Title</th>
+        <th>Gender</th>
+        <th>Date of birth</th>
+        <th></th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="employee:${employees}">
+        <td th:text="${employee.employeeId}"/>
+        <td th:text="${employee.firstName}"/>
+        <td th:text="${employee.lastName}"/>
+        <td th:text="${employee.departmentId}"/>
+        <td th:text="${employee.jobTitle}"/>
+        <td th:text="${employee.gender}"/>
+        <td th:text="${employee.dateOfBirth}"/>
+        <td><a href="" th:href="@{${employee.employeeId}+'/show'}">Show</a></td>
+        <td><a href="" th:href="@{${employee.employeeId}+'/edit'}">Edit</a></td>
+        <td><a href="" th:href="@{${employee.employeeId}+'/delete'}">Delete</a></td>
+    </tr>
+    </tbody>
+</table>
+<div class="container center">
+    <a href="" th:href="@{/create}">Create employee</a></td>
+</div>
+</body>
+</html>
