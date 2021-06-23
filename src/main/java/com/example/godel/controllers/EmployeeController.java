@@ -49,7 +49,7 @@ public class EmployeeController {
     }
     @PostMapping("/{id}")
     public String editEmployee(@PathVariable("id") Long id, Employee employee){
-        employeeService.save(employee);
+        employeeService.update(employee);
         return "redirect:/";
     }
     @GetMapping("/create")

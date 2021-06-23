@@ -1,6 +1,7 @@
 package com.example.godel.controllers;
 
 import com.example.godel.model.Employee;
+import com.example.godel.model.Gender;
 import com.example.godel.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ class EmployeeRestControllerTest {
     @Test
     void getEmployee() throws Exception{
         when(employeeService.getById(anyLong())).thenReturn(
-                new Employee(1l,"Ivan","Ivanov",23,"coder","male",
+                new Employee(1l,"Ivan","Ivanov",23,"coder", Gender.MALE,
                         LocalDate.of(1990,3,23)));
 
         mockMvc.perform(get("/api/employees/1"))
@@ -56,9 +57,9 @@ class EmployeeRestControllerTest {
     @Test
     void getAllEmployees() throws Exception {
         when(employeeService.getAll()).thenReturn(Arrays.asList(
-                new Employee(1l,"Ivan","Ivanov",23,"coder","male",
+                new Employee(1l,"Ivan","Ivanov",23,"coder",Gender.MALE,
                         LocalDate.of(1990,3,23)),
-        new Employee(2l,"Volodya","Petrov",24,"tester","male",
+        new Employee(2l,"Volodya","Petrov",24,"tester",Gender.MALE,
                 LocalDate.of(1993,2,13))));
 
         mockMvc.perform(get("/api/employees"))
