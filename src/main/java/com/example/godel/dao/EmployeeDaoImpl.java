@@ -5,21 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.sql.DataSource;
 import java.util.List;
 
 @Component
 public class EmployeeDaoImpl implements EmployeeDao {
 
-    private DataSource dataSource;
     private JdbcTemplate jdbcTemplate;
 
-
-    @Override
     @Autowired
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource=dataSource;
-        this.jdbcTemplate=new JdbcTemplate(dataSource);
+    public EmployeeDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
