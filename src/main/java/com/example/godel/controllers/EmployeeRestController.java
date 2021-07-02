@@ -2,77 +2,66 @@ package com.example.godel.controllers;
 
 import com.example.godel.model.Employee;
 import com.example.godel.service.EmployeeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
+import java.util.Optional;
 
-@RestController
+@Controller
+@ResponseBody
 @RequestMapping("/api/employees")
+@Api(value = "employee rest controller")
 public class EmployeeRestController {
 
     private EmployeeService employeeService;
+
 
     @Autowired
     public EmployeeRestController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
-    @RequestMapping(value = "{id}",method = RequestMethod.GET, produces =
-            MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Employee> getEmployee(@PathVariable ("id") Long employeeId ){
-            if (employeeId==null){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            Employee employee=this.employeeService.getById(employeeId);
-
-            if (employee==null){
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            return new ResponseEntity<Employee>( employee, HttpStatus.OK);
+    @GetMapping(value = "{id}", produces =
+            MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "get employee by id", response = Employee.class)
+    public Employee getEmployee(@PathVariable Long id ) throws Exception {
+            return this.employeeService.getById(id);
     };
 
-    @RequestMapping(value = "", method = RequestMethod.POST,produces =
-    MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Employee> saveEmployee (@RequestBody Employee employee){
-        if (employee==null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping(value = "", produces =
+    MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "create employee", response = Employee.class)
+    public Employee saveEmployee ( @Valid Employee employee){
         employeeService.save(employee);
-        return new ResponseEntity<>(employee, HttpStatus.CREATED);
+        return employee;
     }
 
-    @RequestMapping(value = "", method = RequestMethod.PUT, produces =
-    MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Employee> updateEmployee(@RequestBody Employee employee){
-        if (employee==null){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    @PutMapping(value = "", produces =
+    MediaType.APPLICATION_JSON_VALUE)
+    public Employee updateEmployee(@Valid Employee employee){
         employeeService.update(employee);
-        return new ResponseEntity<>(employee, HttpStatus.OK);
+        return employee;
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE,produces =
-    MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<Employee> deleteEmployee(@PathVariable ("id") Long id){
-        Employee employee = this.employeeService.getById(id);
-        if (employee==null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    @DeleteMapping(value = "{id}",produces =
+    MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Employee> deleteEmployee(@PathVariable Long id){
         this.employeeService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @RequestMapping(value = "",method = RequestMethod.GET, produces =
-    MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<List<Employee>> getAllEmployees(){
-        List<Employee> employees= this.employeeService.getAll();
-        if (employees.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(employees, HttpStatus.OK);
+    @GetMapping(value = "",produces =
+    MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "get all employees", response = Iterable.class)
+    public Iterable<Employee> getAllEmployees(){
+
+        return this.employeeService.getAll();
     }
 }
