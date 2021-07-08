@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/")
+//@RequestMapping("/")
 public class EmployeeController {
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
     private EmployeeService employeeService;
@@ -26,8 +26,6 @@ public class EmployeeController {
 
     @GetMapping("/")
     public String getIndex(Model model){
-        logger.info("getIndex");
-        logger.error("error");
         model.addAttribute("employees", employeeService.getAll());
         return "index";
     }
