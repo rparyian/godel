@@ -1,0 +1,39 @@
+version: '2'
+
+services:
+  db:
+    image: 'postgres:13.1-alpine'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1990
+      - POSTGRES_DB=employeedb
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    ports:
+      - '5432:5432'
+  app:
+    image: 'docker-spring-boot-postgres:latest'
+    build:
+      context: ""
+    container_name: app
+    depends_on:
+      - db
+#    networks:
+#      - my-network
+  activemq:
+    image: rmohr/activemq:5.10.0
+    container_name: activemq
+    environment:
+      - "TZ=Europe/Amsterdam"
+    volumes:
+      - "./activemq/activemq.xml:/conf/activemq.xml"
+    ports:
+      - "61626:61616" # broker (admin:adminactivemq)(amq:amq)
+      - "8161:8161"   # web    http://boot2docker:8161/admin (admin:admin)
+#    networks:
+#      - my-network
+
+#networks:
+#  my-network:
+#    name: my-network
+#    driver: bridge
+
