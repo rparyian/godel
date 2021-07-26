@@ -17,7 +17,9 @@ services:
     container_name: app
     depends_on:
       - db
-#    networks:
+    ports:
+      - '8080:8080'
+      #    networks:
 #      - my-network
   activemq:
     image: rmohr/activemq:5.10.0
